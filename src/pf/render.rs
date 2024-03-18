@@ -287,7 +287,7 @@ impl SmartRenderCallbacks {
         self.rc_ptr
     }
 
-    pub fn checkout_layer_pixels(&self, checkout_id: u32) -> Result<Layer, Error> {
+    pub fn checkout_layer_pixels(&self, checkout_id: u32) -> Result<Option<Layer>, Error> {
         if let Some(checkout_layer_pixels) = unsafe { *self.rc_ptr }.checkout_layer_pixels {
             let mut effect_world_ptr = std::mem::MaybeUninit::<*mut ae_sys::PF_EffectWorld>::uninit();
 
@@ -298,7 +298,8 @@ impl SmartRenderCallbacks {
                     effect_world_ptr.as_mut_ptr(),
                 )
             } {
-                0 => Ok(Layer::from_raw(unsafe { effect_world_ptr.assume_init() }, self.in_data_ptr, None)),
+                0 if !effect_world_ptr.as_ptr().is_null() => Ok(Some(Layer::from_raw(unsafe { effect_world_ptr.assume_init() }, self.in_data_ptr, None))),
+                0 => Ok(None), 
                 e => Err(Error::from(e)),
             }
         } else {
