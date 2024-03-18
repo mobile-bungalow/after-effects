@@ -12,9 +12,14 @@ macro_rules! ae_acquire_suite_ptr {
             {
                 after_effects_sys::kSPNoError => Ok(suite_ptr.assume_init()),
                 _ => {
-                    log::error!("Suite not found: {} {} {}", stringify!($type), stringify!($name), stringify!($version));
+                    log::error!(
+                        "Suite not found: {} {} {}",
+                        stringify!($type),
+                        stringify!($name),
+                        stringify!($version)
+                    );
                     Err($crate::Error::MissingSuite)
-                },
+                }
             }
         }
     }};
@@ -311,7 +316,7 @@ macro_rules! define_param_wrapper {
                 if let Some(parent_ptr) = self._parent_ptr {
                     let parent_ptr = parent_ptr as *mut ae_sys::PF_ParamDef;
                     let parent = unsafe { &mut *parent_ptr };
-                    if (parent.ui_flags & ae_sys::PF_PUI_STD_CONTROL_ONLY) == 0 {
+                    if (parent.ui_flags as i32 & ae_sys::PF_PUI_STD_CONTROL_ONLY as i32) == 0 {
                         parent.uu.change_flags = ChangeFlag::CHANGED_VALUE.bits();
                     }
                 }
