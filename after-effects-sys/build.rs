@@ -71,7 +71,9 @@ fn main() {
                 .display()
         ));
     if cfg!(target_os = "windows") {
-        ae_bindings = ae_bindings.clang_arg("-D_WINDOWS");
+        ae_bindings = ae_bindings
+            .clang_arg("-D_WINDOWS")
+            .clang_arg("-Wno-pragma-pack");
     }
 
     if cfg!(feature = "artisan-2-api") {
