@@ -234,6 +234,42 @@ impl PreRenderCallbacks {
         self.rc_ptr
     }
 
+    pub fn guid_mixin_ptr<T: Copy + Sized>(&self, data: &T) -> Result<(), Error> {
+        if let Some(mixin_callback) = unsafe { *self.rc_ptr }.GuidMixInPtr {
+
+            match unsafe { 
+                mixin_callback(
+                    (*self.in_data_ptr).effect_ref,
+                    std::mem::size_of_val(data) as _,
+                    data as *const _ as _,
+                )
+            } {
+                0 => Ok(()),
+                e => Err(Error::from(e)),
+            }
+        } else {
+            Err(Error::InvalidCallback)
+        }
+    }
+
+    pub fn guid_mixin_slice(&self, slice: &[u8]) -> Result<(), Error> {
+        if let Some(mixin_callback) = unsafe { *self.rc_ptr }.GuidMixInPtr {
+
+            match unsafe {
+                mixin_callback(
+                    (*self.in_data_ptr).effect_ref,
+                    slice.len() as _,
+                    slice.as_ptr() as _,
+                )
+            } {
+                0 => Ok(()),
+                e => Err(Error::from(e)),
+            }
+        } else {
+            Err(Error::InvalidCallback)
+        }
+    }
+
     pub fn checkout_layer(
         &self,
         index: i32,
