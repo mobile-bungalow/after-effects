@@ -172,6 +172,9 @@ define_param_wrapper! {
         label: CString,
     },
     impl value: bool,
+    fn init(param) {
+        param.set_label(" ");
+    }
 }
 impl<'a> CheckBoxDef<'_> {
     pub fn set_default(&mut self, v: bool) -> &mut Self {
@@ -461,7 +464,9 @@ impl ArbitraryDef<'_> {
         Ok(self)
     }
     pub fn value<T>(&self) -> Result<BorrowedHandleLock<T>, Error> {
-        assert!(!self.def.value.is_null());
+        if self.def.value.is_null() {
+            return Err(Error::InvalidParms);
+        }
         BorrowedHandleLock::<T>::from_raw(self.def.value)
     }
 
@@ -531,9 +536,9 @@ impl ArbParamsExtra {
                 // Create a new handle from the raw Ae handle. This
                 // disposes then handle when it goes out of scope
                 // and is dropped just after.
-                assert!(unsafe { !self.as_ref().u.dispose_func_params.arbH.is_null() });
-
-                Handle::<T>::from_raw(unsafe { self.as_ref().u.dispose_func_params.arbH }, true)?;
+                if unsafe { !self.as_ref().u.dispose_func_params.arbH.is_null() } {
+                    Handle::<T>::from_raw(unsafe { self.as_ref().u.dispose_func_params.arbH }, true)?;
+                }
             }
 
             ae_sys::PF_Arbitrary_COPY_FUNC => unsafe {
@@ -1147,7 +1152,7 @@ impl<'p, P: Eq + PartialEq + Hash + Copy + Debug> Parameters<'p, P> {
         hasher.finish() as i32
     }
 
-    pub fn add_group<F: FnOnce(&mut Self)>(&mut self, type_start: P, type_end: P, name: &str, inner_cb: F) -> Result<(), Error> {
+    pub fn add_group<F: FnOnce(&mut Self) -> Result<(), Error>>(&mut self, type_start: P, type_end: P, name: &str, inner_cb: F) -> Result<(), Error> {
         assert!(!self.in_data.is_null());
 
         let mut param_def = ParamDef::new(InData::from_raw(self.in_data));
@@ -1158,7 +1163,7 @@ impl<'p, P: Eq + PartialEq + Hash + Copy + Debug> Parameters<'p, P> {
         self.map.insert(type_start, ParamMapInfo::new(self.num_params, ParamType::GroupStart));
         self.num_params += 1;
 
-        inner_cb(self);
+        inner_cb(self)?;
 
         let mut param_def = ParamDef::new(InData::from_raw(self.in_data));
         param_def.as_mut().param_type = ParamType::GroupEnd.into();

@@ -230,7 +230,7 @@ impl VideoSegmentSuite {
 
         let result = key.parse_result(value);
 
-        match crate::MemoryManagerSuite::new() {
+        match crate::suites::MemoryManager::new() {
             Ok(mem) => mem.dispose_ptr(ptr),
             Err(e) => log::error!("Failed to dispose pointer in get_node_property. Failed to acquire memory suite: {e:?}")
         }
@@ -274,7 +274,7 @@ impl VideoSegmentSuite {
     pub fn next_keyframe_time(&self, video_node_id: i32, index: i32, time: i64) -> Result<(i64, KeyframeInterpolationMode), Error> {
         let mut keyframe_time = 0;
         let mut keyframe_interpolation_mode: pr_sys::PrKeyframeInterpolationModeFlag = 0;
-        call_suite_fn!(self, GetNextKeyframeTime, video_node_id, index, time, &mut keyframe_time, &mut keyframe_interpolation_mode)?;
+        call_suite_fn!(self, GetNextKeyframeTime, video_node_id, index, time, &mut keyframe_time, &mut keyframe_interpolation_mode as *mut pr_sys::PrKeyframeInterpolationModeFlag as _)?;
         Ok((keyframe_time, keyframe_interpolation_mode.into()))
     }
 
@@ -387,6 +387,8 @@ impl VideoSegmentSuite {
     /// Get graphic layer params at a specific time
     /// * `video_node_id` - The Video Node ID
     /// * `time` - The time requested (in Media time)
+    ///
+    /// Returns a tuple containing: (position, anchor, scale, rotation)
     pub fn graphics_transformed_params(&self, video_node_id: i32, time: i64) -> Result<(pr_sys::prFPoint64, pr_sys::prFPoint64, pr_sys::prFPoint64, f32), Error> {
         let mut position = pr_sys::prFPoint64 { x: 0.0, y: 0.0 };
         let mut anchor = pr_sys::prFPoint64 { x: 0.0, y: 0.0 };
