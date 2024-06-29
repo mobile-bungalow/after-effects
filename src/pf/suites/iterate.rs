@@ -12,9 +12,9 @@ define_suite!(
     ///
     /// Use these suites! Make sure the pixel processing functions you pass to these iterator callbacks are re-entrant.
     ///
-    /// ```
-    ///   The October 2021 SDK update increases the number of concurrent iterate threads up to the available system CPU cores instead of the previous hard-coded limit of 32.
-    /// ```
+    /// 
+    ///  *The October 2021 SDK update increases the number of concurrent iterate threads up to the available system CPU cores instead of the previous hard-coded limit of 32.*
+    /// 
     Iterate8Suite,
     PF_Iterate8Suite2,
     kPFIterate8Suite,
@@ -47,9 +47,9 @@ define_suite!(
     ///
     /// Use these suites! Make sure the pixel processing functions you pass to these iterator callbacks are re-entrant.
     ///
-    /// ```
-    ///   The October 2021 SDK update increases the number of concurrent iterate threads up to the available system CPU cores instead of the previous hard-coded limit of 32.
-    /// ```
+    /// 
+    ///   *The October 2021 SDK update increases the number of concurrent iterate threads up to the available system CPU cores instead of the previous hard-coded limit of 32.*
+    /// 
     Iterate16Suite,
     PF_Iterate16Suite2,
     kPFIterate16Suite,
@@ -81,9 +81,9 @@ define_suite!(
     ///
     /// Use these suites! Make sure the pixel processing functions you pass to these iterator callbacks are re-entrant.
     ///
-    /// ```
-    ///   The October 2021 SDK update increases the number of concurrent iterate threads up to the available system CPU cores instead of the previous hard-coded limit of 32.
-    /// ```
+    /// 
+    ///   *The October 2021 SDK update increases the number of concurrent iterate threads up to the available system CPU cores instead of the previous hard-coded limit of 32.*
+    /// 
     IterateFloatSuite,
     PF_iterateFloatSuite2,
     kPFIterateFloatSuite,

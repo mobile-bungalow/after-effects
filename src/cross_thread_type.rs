@@ -14,7 +14,7 @@
 /// use serde::{Serialize, Deserialize};
 /// use after_effects as ae;
 ///
-/// #[derive(Serialize, Deserialize)]
+/// #[derive(Serialize, Deserialize, Default)]
 /// struct MyInstance {
 ///     inner_data: String,
 /// }
