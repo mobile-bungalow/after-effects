@@ -56,7 +56,7 @@ impl AdobePluginGlobal for Plugin {
 
         in_data.interact().register_ui(
             CustomUIInfo::new()
-                .events(ae::CustomEventFlags::EFFECT)
+                .events(ae::CustomEventFlags::EFFECT | ae::CustomEventFlags::COMP)
         )?;
 
         Ok(())
@@ -70,6 +70,7 @@ impl AdobePluginGlobal for Plugin {
                 out_data.set_return_msg(&format!("Custom_ECW_UI, v3.2,\r{}\r{}\rExample using CustomUI in the effect control window.\rCopyright 2007-2023 Adobe Inc.", personal_info.name, personal_info.serial_str));
             }
             ae::Command::Event { mut extra } => {
+                eprintln!("{:?}", extra);
                 match extra.event() {
                     ae::Event::Click(_) => { events::click(&in_data, &mut extra)?; }
                     ae::Event::Drag(_)  => { events::drag(&in_data, params, &mut extra)?; }
