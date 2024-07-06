@@ -104,7 +104,7 @@ impl std::fmt::Debug for EventExtra {
 define_enum! {
     ae_sys::PF_EffectArea,
     EffectArea {
-        Mone    = ae_sys::PF_EA_NONE,
+        None    = ae_sys::PF_EA_NONE,
         Title   = ae_sys::PF_EA_PARAM_TITLE,
         Control = ae_sys::PF_EA_CONTROL,
     }

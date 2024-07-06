@@ -41,7 +41,10 @@ pub type PluginId = ae_sys::AEGP_PluginID;
 pub type ItemId = i32;
 pub type LayerId = u32;
 
-pub use suites::project::ProjectHandle;
+pub use suites::project::{
+    ProjectHandle,
+    ProjectBitDepth,
+};
 
 pub use suites::camera::{
     Camera,

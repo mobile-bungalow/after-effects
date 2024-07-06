@@ -22,6 +22,8 @@ mod external_dependencies; pub use external_dependencies::*;
 
 pub mod suites {
     pub(crate) mod adv_item;              pub use adv_item            ::AdvItemSuite               as AdvItem;
+    pub(crate) mod app;                   pub use app                 ::{ AppSuite                 as App,
+                                                                          AdvAppSuite              as AdvApp };
     pub(crate) mod background_frame;      pub use background_frame    ::BackgroundFrameSuite       as BackgroundFrame;
     pub(crate) mod cache_on_load;         pub use cache_on_load       ::CacheOnLoadSuite           as CacheOnLoad;
     pub(crate) mod channel;               pub use channel             ::ChannelSuite               as Channel;
@@ -30,8 +32,6 @@ pub mod suites {
                                                                           ColorCallbacksFloatSuite as ColorCallbacksFloat };
     pub(crate) mod effect_sequence_data;  pub use effect_sequence_data::EffectSequenceDataSuite    as EffectSequenceData;
     pub(crate) mod effect_ui;             pub use effect_ui           ::EffectUISuite              as EffectUI;
-    pub(crate) mod app;                   pub use app                 ::{ AppSuite                 as App,
-                                                                          AdvAppSuite              as AdvApp };
     pub(crate) mod custom_ui;             pub use custom_ui           ::{ EffectCustomUISuite      as EffectCustomUI,
                                                                           EffectCustomUIOverlayThemeSuite as EffectCustomUIOverlayTheme };
     pub(crate) mod iterate;               pub use iterate             ::{ Iterate8Suite            as Iterate8,

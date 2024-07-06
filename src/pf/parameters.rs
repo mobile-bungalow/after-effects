@@ -30,6 +30,7 @@ define_enum! {
 }
 
 bitflags! {
+    #[derive(Debug, Clone, Copy)]
     pub struct ParamUIFlags: ae_sys::A_long {
         const NONE = ae_sys::PF_PUI_NONE as ae_sys::A_long;
         /// Effect has custom UI and wants events for this params' title (portion visible when twirled up).
@@ -58,6 +59,7 @@ bitflags! {
 }
 
 bitflags! {
+    #[derive(Debug, Clone, Copy)]
     pub struct ParamFlag: ae_sys::A_long {
         /// If this is passed, the parameter will not be allowed to vary over time -- no keyframe controller will appear at the right.
         const CANNOT_TIME_VARY = ae_sys::PF_ParamFlag_CANNOT_TIME_VARY as ae_sys::A_long;
